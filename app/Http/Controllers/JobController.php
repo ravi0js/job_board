@@ -12,16 +12,21 @@ class JobController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+{
+    // Retrieve only the specified filter parameters from the request
+    $filters = request()->only(
+        'search',      // Keyword search (e.g., job title, description)
+        'min_salary',  // Minimum salary filter
+        'max_salary',  // Maximum salary filter
+        'experience',  // Experience level filter
+        'category'     // Job category filter
+    );
 
-        $filters = request()->only(
-            'search',
-            'min_salary',
-            'max_salary',
-            'experience',
-            'category'
-        );
-        return view('job.index', ['jobs' => Job::filter($filters)->get()]);
+    // Fetch jobs from the database, applying filters, and pass them to the view
+    return view('job.index', [
+        'jobs' => Job::filter($filters)->get()
+    ]);
+
         /*
         $jobs = Job::query();
 
